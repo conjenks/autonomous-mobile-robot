@@ -7,8 +7,8 @@
 char msgBuffer[MESSAGE_BUFFER_SIZE]; 
 int msgBufferPointer = 0;
 
-int mSpeedR = 0; // controll message from the remote
-int mSpeedL = 0; // controll message from the remote
+int mSpeedR = 0; // control message from the remote
+int mSpeedL = 0; // control message from the remote
 
 
 
@@ -26,7 +26,8 @@ void init_buffer(){
 
 void updateCommand(){
   if (Serial.available() > 0){
-    char tmpChar = Serial.read();
+    char tmpChar = Serial.read(); // get first char from Serial
+    setMovement(tmpChar);
     if ((msgBufferPointer == 0)&&(tmpChar == '<')){           // '<' 0x3C 
       msgBuffer[msgBufferPointer] = tmpChar; 
       msgBufferPointer++;
@@ -75,7 +76,24 @@ void updateCommand(){
 }
 
 
-
+void setMovement(char c) {
+  if (c == 't') {
+    mSpeedR = 200;
+    mSpeedL = 200;
+  } 
+  else if (c == 'f') {
+    mSpeedR = 200;
+    mSpeedL = 50; 
+  } 
+  else if (c =='h') {
+    mSpeedR = 50;
+    mSpeedL = 200; 
+  } 
+  else if (c == 'g') {
+    mSpeedR = 0;
+    mSpeedL = 0;
+  }
+}
 
 void evaluateStringCommand(){
   if (msgBuffer[3] == ATR_MSG_ECHO)   echoCommand();
@@ -128,4 +146,5 @@ void setMotorPower(){
   }
   statusCommand();
 }
+
 

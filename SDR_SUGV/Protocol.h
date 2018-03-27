@@ -15,6 +15,11 @@
 #define ATR_SET_MOTOR            0x62   // 'b' in message       Manual Motor speed setting      
 #define ATR_MSG_ECHO             0x63   // 'c' in message       message echo         
 
+#define ATR_FORWARD              0x74 // 't' in message TFGH controls
+#define ATR_LEFT                 0x66 // 'f' in message
+#define ATR_RIGHT                0x68 // 'h' in message
+#define ATR_STOP                 0x67 // 'g' in message
+
 #define MESSAGE_BUFFER_SIZE   64
 
 extern char msgBuffer[MESSAGE_BUFFER_SIZE]; 
