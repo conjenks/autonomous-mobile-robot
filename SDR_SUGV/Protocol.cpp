@@ -28,34 +28,45 @@ void updateCommand(){
   if (Serial.available() > 0){
     char tmpChar = Serial.read();
     if ((msgBufferPointer == 0)&&(tmpChar == '<')){           // '<' 0x3C 
-      msgBuffer[msgBufferPointer] = tmpChar; msgBufferPointer++;
-    }else if (msgBufferPointer == 1){
+      msgBuffer[msgBufferPointer] = tmpChar; 
+      msgBufferPointer++;
+    }
+    else if (msgBufferPointer == 1){
       if  ((tmpChar == '@')||(tmpChar == '!')){     // '!'  (0x21 ==> Binary Format)or '@' (0x40 ==> String format)
-        msgBuffer[msgBufferPointer] = tmpChar; msgBufferPointer++;      
-      }else{
+        msgBuffer[msgBufferPointer] = tmpChar; 
+        msgBufferPointer++;      
+      }
+      else{
         msgBufferPointer = 0;
       }
-    }else if (msgBufferPointer == 2){
+    }
+    else if (msgBufferPointer == 2){
       if (tmpChar == ' '){     // ' ' (0x20 ==> Space)
-        msgBuffer[msgBufferPointer] = tmpChar; msgBufferPointer++;      
-      }else{
+        msgBuffer[msgBufferPointer] = tmpChar; 
+        msgBufferPointer++;      
+      }
+      else{
         msgBufferPointer = 0;
       }
-    }else if (msgBufferPointer > MESSAGE_BUFFER_SIZE){ 
+    }
+    else if (msgBufferPointer > MESSAGE_BUFFER_SIZE){ 
       msgBufferPointer = 0; 
       if ( tmpChar == '<') {
         msgBuffer[0] = tmpChar;    
         msgBufferPointer = 1;          
       }
-    }else if (msgBufferPointer > 2) {
+    }
+    else if (msgBufferPointer > 2) {
       if (( msgBuffer[1] == '@')&& (tmpChar == '>')) {
         //echoCommand();
         evaluateStringCommand();
         msgBufferPointer = 0;        
-      }else if  (( msgBuffer[1] == '!')&& (msgBuffer[3] == msgBufferPointer )) {
+      }
+      else if  (( msgBuffer[1] == '!')&& (msgBuffer[3] == msgBufferPointer )) {
         evaluateBinaryCommand();
         msgBufferPointer = 0;
-      }else{
+      }
+      else{
         msgBuffer[msgBufferPointer] = tmpChar;
         msgBufferPointer++;
       }
@@ -70,7 +81,7 @@ void evaluateStringCommand(){
   if (msgBuffer[3] == ATR_MSG_ECHO)   echoCommand();
   else if (msgBuffer[3] == ATR_STATUS)  statusCommand();
   else if (msgBuffer[3] == ATR_SET_MOTOR) setMotorPower();
-  
+
 }
 void evaluateBinaryCommand(){
   Serial.print("N/A-");
@@ -86,20 +97,35 @@ void echoCommand(){
 }
 
 void statusCommand(){
-  Serial.print("[");Serial.print(autoFlag); Serial.print("="); Serial.print(mSpeedR);Serial.print(" : "); Serial.print(mSpeedL); 
-  Serial.print("  +  ");Serial.print(odometerR); Serial.print(" : "); Serial.print(odometerL); Serial.print(" + "); 
-  Serial.print(lineR); Serial.print(" : "); Serial.print(lineL); Serial.print(" + ");  Serial.print(sonar); Serial.println("]"); 
+  Serial.print("auto flag: ");
+  Serial.println(autoFlag); 
+  Serial.print("speed R: "); 
+  Serial.println(mSpeedR);
+  Serial.print("speed L: "); 
+  Serial.println(mSpeedL); 
+  Serial.print("odometer R: ");
+  Serial.println(odometerR); 
+  Serial.print("odometer L: "); 
+  Serial.println(odometerL); 
+  Serial.print("line R: "); 
+  Serial.println(lineR); 
+  Serial.print("line L"); 
+  Serial.println(lineL); 
+  Serial.print("sonar: ");  
+  Serial.println(sonar); 
+  Serial.print(""); 
 }
 
 void setMotorPower(){
-    char *p = msgBuffer;
-    String str;
-    int cnt = 0;
-    while ((str = strtok_r(p, " ", &p)) != NULL) { // delimiter is the space
-      if (cnt == 2) mSpeedR = map( str.toInt(), 0 , 1024, -255, 255);
-      if (cnt == 3) mSpeedL = map( str.toInt(), 0 , 1024, -255, 255);
-      if (cnt == 4) autoFlag = str.toInt(); 
-      cnt++;
-    }
-    statusCommand();
+  char *p = msgBuffer;
+  String str;
+  int cnt = 0;
+  while ((str = strtok_r(p, " ", &p)) != NULL) { // delimiter is the space
+    if (cnt == 2) mSpeedR = map( str.toInt(), 0 , 1024, -255, 255);
+    if (cnt == 3) mSpeedL = map( str.toInt(), 0 , 1024, -255, 255);
+    if (cnt == 4) autoFlag = str.toInt(); 
+    cnt++;
+  }
+  statusCommand();
 }
+
