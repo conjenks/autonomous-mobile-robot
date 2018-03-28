@@ -23,9 +23,6 @@ void setup() {
 void loop() {
   currentMillis = millis();
   
-  mSpeedR = 200; // TESTING
-  mSpeedL = 200;
-  
   updateCommand();
   updateSensors();  
   updatePlan();

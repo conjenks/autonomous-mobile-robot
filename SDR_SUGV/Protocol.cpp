@@ -3,6 +3,7 @@
 #include "Localization.h"
 #include "Sensing.h"
 #include "SDR_SUGV.h"
+#include "Action.h"
 
 char msgBuffer[MESSAGE_BUFFER_SIZE]; 
 int msgBufferPointer = 0;
@@ -11,7 +12,7 @@ int mSpeedR = 0; // control message from the remote
 int mSpeedL = 0; // control message from the remote
 
 
-
+void setMovement(char);
 void evaluateStringCommand();
 void evaluateBinaryCommand();
 void echoCommand();
@@ -78,21 +79,36 @@ void updateCommand(){
 
 void setMovement(char c) {
   if (c == 't') {
-    mSpeedR = 200;
-    mSpeedL = 200;
+    Serial.println("forward");
+    mSpeedR = 255;
+    mSpeedL = 255;
   } 
-  else if (c == 'f') {
-    mSpeedR = 200;
-    mSpeedL = 50; 
+  else if (c == 'h') { // TURN RIGHT
+    updateMotor();
+    Serial.println("left");
+    mSpeedR = 255;
+    mSpeedL = 100; 
   } 
-  else if (c =='h') {
-    mSpeedR = 50;
-    mSpeedL = 200; 
+  else if (c =='f') { // TURN LEFT
+    updateMotor();
+    Serial.println("right");
+    mSpeedR = 100;
+    mSpeedL = 255; 
   } 
   else if (c == 'g') {
+    Serial.println("stop");
     mSpeedR = 0;
     mSpeedL = 0;
   }
+  else if (c == 'v') {
+    mSpeedR = 0;
+    mSpeedL = 0;
+    updateMotor();
+    Serial.println("reverse");
+    mSpeedR = -255;
+    mSpeedL = -255;
+  }
+  statusCommand();
 }
 
 void evaluateStringCommand(){

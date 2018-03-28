@@ -9,7 +9,7 @@
 void updateMotor(){
   if( mSpeedR > 0){
     digitalWrite(MOTOR_RIGHT_A, HIGH); digitalWrite(MOTOR_RIGHT_B, LOW); analogWrite(MOTOR_RIGHT_ENABLE, mSpeedR); 
-  }else if ( mSpeedR < 0){
+  }else if ( mSpeedR < 0){ // REVERSE?
     digitalWrite(MOTOR_RIGHT_A, LOW); digitalWrite(MOTOR_RIGHT_B, HIGH); analogWrite(MOTOR_RIGHT_ENABLE, abs(mSpeedR)); 
   }else {
     digitalWrite(MOTOR_RIGHT_A, LOW); digitalWrite(MOTOR_RIGHT_B, LOW); analogWrite(MOTOR_RIGHT_ENABLE, 0);    
