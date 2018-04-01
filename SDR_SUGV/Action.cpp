@@ -33,6 +33,7 @@ void updateMotor() {
   }
   if (autoFlag == 1) {
     // auto driving here
+    
   }
 }
 

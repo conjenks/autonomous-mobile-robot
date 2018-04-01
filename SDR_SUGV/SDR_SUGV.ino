@@ -35,7 +35,7 @@ void updatePlan(){
   }else if (autoFlag == 0){
   }else{
   }
-  if (stopFlag ){
+  if (stopFlag){
     speedR = 0; speedL = 0;
   }
 }
