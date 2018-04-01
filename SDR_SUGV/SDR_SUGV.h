@@ -21,11 +21,10 @@
 #define SONAR_ECHO           5
 #define SONAR_TRIG           4
 
-
 #define SONAR_BUFFER_SIZE   32
 #define SONAR_STOP_DISTANCE   30
 
-#define ODOMETER_PER_ANGLE    9   // 9 degree per click ==> 40 clinks per one revolution 
+#define ODOMETER_PER_ANGLE    9   // 9 degree per click ==> 40 clicks per one revolution 
 #define ODOMETER_PER_DISTANCE    5.1   // 65 x 3.14 / 40 
 #define WHEEL_SIZE            65  // 65 mm
 
@@ -45,6 +44,9 @@ extern unsigned long odometerClock;
 extern unsigned long currentMillis;
 extern unsigned long previousMillis;
 
+extern int sonarAverage;
+extern int sonarTotal;
+extern int sonarCounts;
 
 
 #endif /* SDR_SUGV_03_H_ */

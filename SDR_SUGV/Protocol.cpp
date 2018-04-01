@@ -13,6 +13,7 @@ int mSpeedL = 0; // control message from the remote
 
 
 void setMovement(char);
+void checkAutoManual(char);
 void evaluateStringCommand();
 void evaluateBinaryCommand();
 void echoCommand();
@@ -29,6 +30,7 @@ void updateCommand(){
   if (Serial.available() > 0){
     char tmpChar = Serial.read(); // get first char from Serial
     setMovement(tmpChar);
+    checkAutoManual(tmpChar);
     if ((msgBufferPointer == 0)&&(tmpChar == '<')){           // '<' 0x3C 
       msgBuffer[msgBufferPointer] = tmpChar; 
       msgBufferPointer++;
@@ -109,6 +111,14 @@ void setMovement(char c) {
     mSpeedL = -255;
   }
   statusCommand();
+}
+
+void checkAutoManual(char c) {
+  if (c == 's') {
+    if (autoFlag == 1) {
+      autoFlag = -1;
+    } else autoFlag = 1;
+  }
 }
 
 void evaluateStringCommand(){

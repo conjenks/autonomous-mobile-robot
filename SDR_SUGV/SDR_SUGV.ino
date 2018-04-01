@@ -50,8 +50,22 @@ void updateAction(){
 void updateSensors(){
   updateLineSensor(); 
   sonar = updateSonar();
+  averageSonar();
 }
 
+int sonarAverage;
+int sonarTotal;
+int sonarCounts;
+
+void averageSonar() {
+  if (sonarCounts > 10) {
+    sonarCounts = 1;
+    sonarTotal = 0;
+  }
+  sonarTotal = sonarTotal + sonar;
+  sonarAverage = sonarTotal / sonarCounts;
+  sonarCounts++;
+}
 
 
 
@@ -60,6 +74,8 @@ void initialization(){
   currentMillis = millis();
   init_communication();
   init_pin();
+  sonarCounts = 1;
+  sonarTotal = 0;
   
 }
 

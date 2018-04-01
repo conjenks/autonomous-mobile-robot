@@ -6,20 +6,33 @@
 #include "SDR_SUGV.h"
 
 
-void updateMotor(){
-  if( mSpeedR > 0){
-    digitalWrite(MOTOR_RIGHT_A, HIGH); digitalWrite(MOTOR_RIGHT_B, LOW); analogWrite(MOTOR_RIGHT_ENABLE, mSpeedR); 
-  }else if ( mSpeedR < 0){ // REVERSE?
-    digitalWrite(MOTOR_RIGHT_A, LOW); digitalWrite(MOTOR_RIGHT_B, HIGH); analogWrite(MOTOR_RIGHT_ENABLE, abs(mSpeedR)); 
-  }else {
-    digitalWrite(MOTOR_RIGHT_A, LOW); digitalWrite(MOTOR_RIGHT_B, LOW); analogWrite(MOTOR_RIGHT_ENABLE, 0);    
+void updateMotor() {
+
+  if (autoFlag == -1) { // manual driving
+
+    if (sonarAverage > SONAR_STOP_DISTANCE) {
+      if ( mSpeedR > 0) {
+        digitalWrite(MOTOR_RIGHT_A, HIGH); digitalWrite(MOTOR_RIGHT_B, LOW); analogWrite(MOTOR_RIGHT_ENABLE, mSpeedR);
+      } else if ( mSpeedR < 0) { // REVERSE?
+        digitalWrite(MOTOR_RIGHT_A, LOW); digitalWrite(MOTOR_RIGHT_B, HIGH); analogWrite(MOTOR_RIGHT_ENABLE, abs(mSpeedR));
+      } else {
+        digitalWrite(MOTOR_RIGHT_A, LOW); digitalWrite(MOTOR_RIGHT_B, LOW); analogWrite(MOTOR_RIGHT_ENABLE, 0);
+      }
+      if ( mSpeedL > 0) {
+        digitalWrite(MOTOR_LEFT_A, HIGH); digitalWrite(MOTOR_LEFT_B, LOW); analogWrite(MOTOR_LEFT_ENABLE, mSpeedL);
+      } else if ( mSpeedL < 0) {
+        digitalWrite(MOTOR_LEFT_A, LOW); digitalWrite(MOTOR_LEFT_B, HIGH ); analogWrite(MOTOR_LEFT_ENABLE, abs(mSpeedL));
+      } else {
+        digitalWrite(MOTOR_LEFT_A, LOW); digitalWrite(MOTOR_LEFT_B, LOW); analogWrite(MOTOR_LEFT_ENABLE, 0);
+      }
+    } else { // stop
+      digitalWrite(MOTOR_RIGHT_A, LOW); digitalWrite(MOTOR_RIGHT_B, LOW); analogWrite(MOTOR_RIGHT_ENABLE, 0);
+      digitalWrite(MOTOR_LEFT_A, LOW); digitalWrite(MOTOR_LEFT_B, LOW); analogWrite(MOTOR_LEFT_ENABLE, 0);
+    }
+
   }
-  if( mSpeedL > 0){
-    digitalWrite(MOTOR_LEFT_A, HIGH); digitalWrite(MOTOR_LEFT_B, LOW); analogWrite(MOTOR_LEFT_ENABLE, mSpeedL);     
-  }else if ( mSpeedL < 0){
-    digitalWrite(MOTOR_LEFT_A, LOW); digitalWrite(MOTOR_LEFT_B, HIGH ); analogWrite(MOTOR_LEFT_ENABLE, abs(mSpeedL)); 
-  }else {
-    digitalWrite(MOTOR_LEFT_A, LOW); digitalWrite(MOTOR_LEFT_B, LOW); analogWrite(MOTOR_LEFT_ENABLE, 0);         
+  if (autoFlag == 1) {
+    // auto driving here
   }
 }
 
