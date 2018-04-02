@@ -30,16 +30,16 @@ void updateLineSensor(){
 }
 
 void rightOdometer(){
-  if (speedR > 0){
+  if (mSpeedR > 0){
     odometerR++;
-  }else if (speedR < 0){
+  }else if (mSpeedR < 0){
     odometerR--;
   }
 }
 void leftOdometer(){
-  if (speedL > 0){
+  if (mSpeedL > 0){
     odometerL++;
-  }else if (speedR < 0){
+  }else if (mSpeedL < 0){
     odometerL--;
   }
 }
