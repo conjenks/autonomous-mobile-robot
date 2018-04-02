@@ -52,6 +52,7 @@ void updateSensors(){
   sonar = updateSonar();
   averageSonar();
   updateOdometer();
+  updateSpeedmeter();
 }
 
 int sonarAverage;

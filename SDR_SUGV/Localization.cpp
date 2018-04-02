@@ -19,6 +19,18 @@ void updateOdometer(){
 }
 
 
+int oldOdometerL = 0;
+int oldOdometerR = 0;
+
 void updateSpeedmeter(){
-	
+  int distance;
+  if (odometerL > odometerR) {
+   distance = odometerL - oldOdometerL; 
+  } else {
+   distance = odometerR - oldOdometerR; 
+  }
+  int time = currentMillis - previousMillis;
+  speedRobot = distance / time;
+  oldOdometerL = odometerL;
+  oldOdometerR = odometerR;
 }

@@ -158,7 +158,9 @@ void statusCommand(){
   Serial.print("sonar: ");  
   Serial.println(sonar);
   Serial.print("distance traveled (mm): ");
-  Serial.println(odometerClock); 
+  Serial.println(odometerClock);
+  Serial.print("speed (mm per ms): ");
+  Serial.println(speedRobot); 
   Serial.print(""); 
 }
 
