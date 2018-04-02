@@ -22,7 +22,7 @@
 #define SONAR_TRIG           4
 
 #define SONAR_BUFFER_SIZE   32
-#define SONAR_STOP_DISTANCE   30
+#define SONAR_STOP_DISTANCE   15
 
 #define ODOMETER_PER_ANGLE    9   // 9 degree per click ==> 40 clicks per one revolution 
 #define ODOMETER_PER_DISTANCE    5.1   // 65 x 3.14 / 40 
