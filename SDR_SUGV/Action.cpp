@@ -10,7 +10,7 @@ void updateMotor() {
 
   if (autoFlag == -1) { // manual driving
 
-    if (sonarAverage > SONAR_STOP_DISTANCE) {
+    if (sonarAverage > SONAR_STOP_DISTANCE || (mSpeedR == -255 && mSpeedL == -255)) {
       if ( mSpeedR > 0) {
         digitalWrite(MOTOR_RIGHT_A, HIGH); digitalWrite(MOTOR_RIGHT_B, LOW); analogWrite(MOTOR_RIGHT_ENABLE, mSpeedR);
       } else if ( mSpeedR < 0) { // REVERSE?
