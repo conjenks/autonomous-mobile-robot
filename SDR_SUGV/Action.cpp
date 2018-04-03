@@ -58,64 +58,45 @@ void updateMotor() {
       Serial.println("obstacle detected -- STOPPED");
       stop();
     }
-    else if (lineR == 1) { // we're over the left line
-      while (lineR == 1) { // turn right while we're over the left line
-        stop();
-        delay(500);
-        digitalWrite(MOTOR_RIGHT_A, HIGH); 
-        digitalWrite(MOTOR_RIGHT_B, LOW); 
-        analogWrite(MOTOR_RIGHT_ENABLE, -255);
-        digitalWrite(MOTOR_LEFT_A, HIGH); 
-        digitalWrite(MOTOR_LEFT_B, LOW); 
-        analogWrite(MOTOR_LEFT_ENABLE, 0);
-        stop();
-        delay(500);
-        digitalWrite(MOTOR_RIGHT_A, HIGH); 
-        digitalWrite(MOTOR_RIGHT_B, LOW); 
-        analogWrite(MOTOR_RIGHT_ENABLE, -255);
-        digitalWrite(MOTOR_LEFT_A, HIGH); 
-        digitalWrite(MOTOR_LEFT_B, LOW); 
-        analogWrite(MOTOR_LEFT_ENABLE, 255);
-        delay(500);
-        stop();
-        lineR = digitalRead(LINE_RIGHT);
-      } // NOW CONTINUE MOVING
-      Serial.println("right line auto called");
+    else if (lineR == 1) { // turn right while we're over the left line
+      stop();
+      delay(500);
       digitalWrite(MOTOR_RIGHT_A, HIGH); 
       digitalWrite(MOTOR_RIGHT_B, LOW); 
-      analogWrite(MOTOR_RIGHT_ENABLE, 255);
+      analogWrite(MOTOR_RIGHT_ENABLE, -255);
+      digitalWrite(MOTOR_LEFT_A, HIGH); 
+      digitalWrite(MOTOR_LEFT_B, LOW); 
+      analogWrite(MOTOR_LEFT_ENABLE, 0);
+      stop();
+      delay(500);
+      digitalWrite(MOTOR_RIGHT_A, HIGH); 
+      digitalWrite(MOTOR_RIGHT_B, LOW); 
+      analogWrite(MOTOR_RIGHT_ENABLE, -255);
       digitalWrite(MOTOR_LEFT_A, HIGH); 
       digitalWrite(MOTOR_LEFT_B, LOW); 
       analogWrite(MOTOR_LEFT_ENABLE, 255);
+      delay(750);
+      stop();
     }
-    else if (lineL == 1) { // we're over the right line
-      while (lineL == 1) { // turn left while we're over the right line
-        stop();
-        delay(500);
-        digitalWrite(MOTOR_RIGHT_A, HIGH); 
-        digitalWrite(MOTOR_RIGHT_B, LOW); 
-        analogWrite(MOTOR_RIGHT_ENABLE, 0);
-        digitalWrite(MOTOR_LEFT_A, HIGH); 
-        digitalWrite(MOTOR_LEFT_B, LOW); 
-        analogWrite(MOTOR_LEFT_ENABLE, -255);
-        stop();
-        delay(500);
-        digitalWrite(MOTOR_RIGHT_A, HIGH); 
-        digitalWrite(MOTOR_RIGHT_B, LOW); 
-        analogWrite(MOTOR_RIGHT_ENABLE, 255);
-        digitalWrite(MOTOR_LEFT_A, HIGH); 
-        digitalWrite(MOTOR_LEFT_B, LOW); 
-        analogWrite(MOTOR_LEFT_ENABLE, -255);
-        delay(500);
-        lineL = digitalRead(LINE_LEFT);
-      }
-      Serial.println("left line auto called");
+    else if (lineL == 1) { // turn left while we're over the right line
+      stop();
+      delay(500);
+      digitalWrite(MOTOR_RIGHT_A, HIGH); 
+      digitalWrite(MOTOR_RIGHT_B, LOW); 
+      analogWrite(MOTOR_RIGHT_ENABLE, 0);
+      digitalWrite(MOTOR_LEFT_A, HIGH); 
+      digitalWrite(MOTOR_LEFT_B, LOW); 
+      analogWrite(MOTOR_LEFT_ENABLE, -255);
+      stop();
+      delay(500);
       digitalWrite(MOTOR_RIGHT_A, HIGH); 
       digitalWrite(MOTOR_RIGHT_B, LOW); 
       analogWrite(MOTOR_RIGHT_ENABLE, 255);
       digitalWrite(MOTOR_LEFT_A, HIGH); 
       digitalWrite(MOTOR_LEFT_B, LOW); 
-      analogWrite(MOTOR_LEFT_ENABLE, 255);
+      analogWrite(MOTOR_LEFT_ENABLE, -255);
+      delay(750);
+      stop();
     }
     else { // no constraints, move forward
       Serial.println("auto moving forward");
@@ -138,6 +119,8 @@ void stop() {
   digitalWrite(MOTOR_LEFT_B, LOW); 
   analogWrite(MOTOR_LEFT_ENABLE, 0);
 }
+
+
 
 
 

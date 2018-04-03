@@ -60,7 +60,7 @@ int sonarTotal;
 int sonarCounts;
 
 void averageSonar() {
-  if (sonarCounts > 10) {
+  if (sonarCounts > 50) {
     sonarCounts = 1;
     sonarTotal = 0;
   }
