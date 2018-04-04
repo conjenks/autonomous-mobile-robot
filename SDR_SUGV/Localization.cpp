@@ -1,9 +1,13 @@
+#include "Arduino.h"
+#include "Protocol.h"
 #include "Localization.h"
 #include "Sensing.h"
 #include "SDR_SUGV.h"
+#include "Action.h"
 
 
-int speedRobot = 0; 
+
+float speedRobot = 0; 
 int angle = 0;
 int positionX = 0; 
 int positionY = 0;
@@ -15,22 +19,22 @@ void updateOdometer(){
   int L = odometerL * 5.1;
   if (R > L) {
     odometerClock = R;
-  } else odometerClock = L;
+  } 
+  else odometerClock = L;
 }
 
 
-int oldOdometerL = 0;
-int oldOdometerR = 0;
+int oldOdometerClock = 0;
+float oldMillis = 0.0;
 
 void updateSpeedmeter(){
-  int distance;
-  if (odometerL > odometerR) {
-   distance = odometerL - oldOdometerL; 
-  } else {
-   distance = odometerR - oldOdometerR; 
+  float distance = odometerClock - oldOdometerClock;
+  float time = currentMillis - oldMillis;
+  if (distance > 20) { // we've traveled ~20 mm
+    speedRobot = (distance / time) * 1000; // mm per second
+    oldOdometerClock = odometerClock;
+    oldMillis = currentMillis;
   }
-  int time = currentMillis - previousMillis;
-  speedRobot = distance / time;
-  oldOdometerL = odometerL;
-  oldOdometerR = odometerR;
 }
+
+

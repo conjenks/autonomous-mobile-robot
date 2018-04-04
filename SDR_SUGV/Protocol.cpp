@@ -159,9 +159,10 @@ void statusCommand(){
   Serial.println(sonar);
   Serial.print("distance traveled (mm): ");
   Serial.println(odometerClock);
-  Serial.print("speed (mm per ms): ");
+  Serial.print("current speed (mm per second): ");
   Serial.println(speedRobot); 
-  Serial.print(""); 
+  Serial.println(""); 
+  Serial.println("");
 }
 
 void setMotorPower(){

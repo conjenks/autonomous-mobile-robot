@@ -5,7 +5,7 @@
 #define ODOMETER_PER_DISTANCE    5.1   // 65 x 3.14 / 40 
 #define WHEEL_SIZE            65  // 65 mm
 
-extern int speedRobot; 
+extern float speedRobot; 
 extern int angle;
 extern int positionX; 
 extern int positionY;
