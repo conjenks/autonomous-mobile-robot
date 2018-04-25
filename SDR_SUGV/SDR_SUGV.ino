@@ -19,9 +19,20 @@ void setup() {
   initialization();
 }
 
+int value;
 
 void loop() {
   currentMillis = millis();
+  value = analogRead(A0);
+  Serial.println(value);
+  if (value > 200) {
+    digitalWrite(50, LOW);
+    digitalWrite(52, LOW);
+  } else {
+    digitalWrite(50, HIGH);
+    digitalWrite(52, HIGH);
+  }
+  delay(500);
   
   updateCommand();
   updateSensors();  
@@ -95,6 +106,9 @@ void init_pin(){
   pinMode(LINE_LEFT, INPUT_PULLUP); pinMode(LINE_RIGHT, INPUT_PULLUP); 
   attachInterrupt(0, rightOdometer, CHANGE);
   attachInterrupt(1, leftOdometer, CHANGE);
+  // setting up the headlight LED pins
+  pinMode(50, OUTPUT); pinMode(52, OUTPUT);
+  pinMode(A0, INPUT);
 }
 
 
