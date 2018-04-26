@@ -4,6 +4,7 @@
 #include "Localization.h"
 #include "Sensing.h"
 #include "Action.h"
+#include <LiquidCrystal.h>
 
 int stopFlag = 0;
 int autoFlag = -1;   // Auto or Manual Control
@@ -13,10 +14,14 @@ unsigned long lineClock = 0;
 unsigned long odometerClock = 0;
 unsigned long currentMillis = 0;
 unsigned long previousMillis = 0;
+const int rs=29, en=31, d4=33, d5=35, d6=37, d7=39;
+LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
 void setup() {
   // put your setup code here, to run once:
   initialization();
+  lcd.begin(5, 1);
+  
 }
 
 int value;
@@ -32,7 +37,12 @@ void loop() {
     digitalWrite(50, HIGH);
     digitalWrite(52, HIGH);
   }
-  delay(500);
+  
+  if (sonarAverage < SONAR_STOP_DISTANCE) {
+    lcd.print("MOVE!           ");
+  }  else {
+    lcd.print("                "); 
+  }
   
   updateCommand();
   updateSensors();  
