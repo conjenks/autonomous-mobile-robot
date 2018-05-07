@@ -15,13 +15,15 @@
 # 3. Navigate the browser to the local webpage.
 #
 #
-# - ATR Lab at Kent State University - 
+# - ATR Lab at Kent State University -
 # - Kim added some text on videostream
 
 
 from flask import Flask, render_template, Response
 from camera import VideoCamera
 import socket
+import sys
+import time
 
 app = Flask(__name__)
 
@@ -31,7 +33,7 @@ def index():
 
 def gen(camera):
     host = "127.0.0.1"
-    port = "5555"
+    port = "1234"
     client_socket = socket.socket()
 
     try:
@@ -41,8 +43,20 @@ def gen(camera):
         time.sleep(5)  # intentional delay on reconnection as client
         print("Socket Error... exiting")
         sys.exit(0)
+    odometer = "0"
+    speed = "0"
     while True:
-        frame = camera.get_frame(client_socket.recv(4096))
+        info = client_socket.recv(1024)
+        oOpen, oClose = info.find("<O"), info.find("O>")
+        sOpen, sClose = info.find("<S"), info.find("S>")
+        if (oOpen != -1) and (oClose != -1):
+            odometer = str(info[oOpen+2:oClose])
+            print(odometer)
+        if sOpen != -1 and sClose != -1:
+            speed = str(info[sOpen+2:sClose])
+            print(speed)
+        message = "odometer: " + odometer + ", speed: " + speed
+        frame = camera.get_frame(message)
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
@@ -50,7 +64,7 @@ def gen(camera):
 def video_feed():
     return Response(gen(VideoCamera()),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
-        
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)

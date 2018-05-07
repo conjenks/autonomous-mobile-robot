@@ -81,24 +81,20 @@ void updateCommand(){
 
 void setMovement(char c) {
   if (c == 't') {
-    Serial.println("forward");
     mSpeedR = 255;
     mSpeedL = 255;
   } 
   else if (c == 'h') { // TURN RIGHT
     updateMotor();
-    Serial.println("left");
     mSpeedR = 255;
     mSpeedL = 100; 
   } 
   else if (c =='f') { // TURN LEFT
     updateMotor();
-    Serial.println("right");
     mSpeedR = 100;
     mSpeedL = 255; 
   } 
   else if (c == 'g') {
-    Serial.println("stop");
     mSpeedR = 0;
     mSpeedL = 0;
   }
@@ -106,7 +102,6 @@ void setMovement(char c) {
     mSpeedR = 0;
     mSpeedL = 0;
     updateMotor();
-    Serial.println("reverse");
     mSpeedR = -255;
     mSpeedL = -255;
   }
@@ -122,35 +117,30 @@ void checkAutoManual(char c) {
 }
 
 void evaluateStringCommand(){
-  if (msgBuffer[3] == ATR_MSG_ECHO)   echoCommand();
+  if (msgBuffer[3] == ATR_MSG_ECHO)   ;//echoCommand();
   else if (msgBuffer[3] == ATR_STATUS)  statusCommand();
   else if (msgBuffer[3] == ATR_SET_MOTOR) setMotorPower();
 
 }
 void evaluateBinaryCommand(){
-  Serial.print("N/A-");
-  echoCommand();
+  //echoCommand();
 }
 
-void echoCommand(){
-  Serial.print("[");
-  for(int i = 0; i <= msgBufferPointer; i++){
-    Serial.print(msgBuffer[i]);
-  }
-  Serial.println("]");
-}
+//void echoCommand(){
+//  Serial.print("[");
+//  for(int i = 0; i <= msgBufferPointer; i++){
+//    Serial.print(msgBuffer[i]);
+//  }
+//  Serial.println("]");
+//}
 
 void statusCommand(){
-  Serial.print("odometer: ");
-  Serial.println(odometerR); 
-  Serial.print("odometer L: "); 
-  Serial.println(odometerL);
-  Serial.print("distance traveled (mm): ");
-  Serial.println(odometerClock);
-  Serial.print("current speed (mm per second): ");
-  Serial.println(speedRobot); 
-  Serial.println(""); 
-  Serial.println("");
+  Serial.print("<O");
+  Serial.print(odometerClock);
+  Serial.print("O>");
+  Serial.print("<S");
+  Serial.print(speedRobot); 
+  Serial.print("S>");
 }
 
 void setMotorPower(){
