@@ -21,6 +21,7 @@
 
 from flask import Flask, render_template, Response
 from camera import VideoCamera
+import socket
 
 app = Flask(__name__)
 
@@ -29,8 +30,19 @@ def index():
     return render_template('index.html')
 
 def gen(camera):
+    host = "127.0.0.1"
+    port = "5555"
+    client_socket = socket.socket()
+
+    try:
+        client_socket.connect((host, int(port)))
+    except socket.error as msg:
+        sys.stderr.write('WARNING: {}\n'.format(msg))
+        time.sleep(5)  # intentional delay on reconnection as client
+        print("Socket Error... exiting")
+        sys.exit(0)
     while True:
-        frame = camera.get_frame()
+        frame = camera.get_frame(client_socket.recv(4096))
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
@@ -38,6 +50,7 @@ def gen(camera):
 def video_feed():
     return Response(gen(VideoCamera()),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
+        
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)

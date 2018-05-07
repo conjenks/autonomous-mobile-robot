@@ -29,7 +29,6 @@ int value;
 void loop() {
   currentMillis = millis();
   value = analogRead(A0);
-  Serial.println(value);
   if (value > 200) {
     digitalWrite(50, LOW);
     digitalWrite(52, LOW);

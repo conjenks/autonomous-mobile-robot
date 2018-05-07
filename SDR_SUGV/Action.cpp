@@ -108,7 +108,6 @@ void updateMotor() {
       stop();
     }
     else { // no constraints, move forward
-      Serial.println("auto moving forward");
       digitalWrite(MOTOR_RIGHT_A, HIGH); 
       digitalWrite(MOTOR_RIGHT_B, LOW); 
       analogWrite(MOTOR_RIGHT_ENABLE, 255);

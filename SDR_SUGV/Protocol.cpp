@@ -141,22 +141,10 @@ void echoCommand(){
 }
 
 void statusCommand(){
-  Serial.print("auto flag: ");
-  Serial.println(autoFlag); 
-  Serial.print("speed R: "); 
-  Serial.println(mSpeedR);
-  Serial.print("speed L: "); 
-  Serial.println(mSpeedL); 
-  Serial.print("odometer R: ");
+  Serial.print("odometer: ");
   Serial.println(odometerR); 
   Serial.print("odometer L: "); 
-  Serial.println(odometerL); 
-  Serial.print("line R: "); 
-  Serial.println(lineR); 
-  Serial.print("line L"); 
-  Serial.println(lineL); 
-  Serial.print("sonar: ");  
-  Serial.println(sonar);
+  Serial.println(odometerL);
   Serial.print("distance traveled (mm): ");
   Serial.println(odometerClock);
   Serial.print("current speed (mm per second): ");
