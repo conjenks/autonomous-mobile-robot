@@ -25,37 +25,122 @@ import socket
 import sys
 import time
 
-app = Flask(__name__)
+from threading import Thread
+import sys
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+# import the Queue class from Python 3
+if sys.version_info >= (3, 0):
+    from queue import Queue
 
-def gen(camera):
+else:
+    from Queue import Queue
+
+stopped = False
+Q = Queue(maxsize=128)
+
+def start():
+    print "Started thread"
+    # start a thread to read frames from the camera
+    t = Thread(target=update, args=())
+    t.daemon = True
+    t.start()
+
+def update():
+
     host = "127.0.0.1"
     port = "1234"
     client_socket = socket.socket()
 
     try:
         client_socket.connect((host, int(port)))
+        #client_socket.setblocking(0)
     except socket.error as msg:
         sys.stderr.write('WARNING: {}\n'.format(msg))
         time.sleep(5)  # intentional delay on reconnection as client
         print("Socket Error... exiting")
         sys.exit(0)
+
     odometer = "0"
     speed = "0"
+
+    #keep looping infinitely
     while True:
+        # if the thread indicator variable is set, stop the thread
+        if stopped:
+            return
+
         info = client_socket.recv(1024)
-        oOpen, oClose = info.find("<O"), info.find("O>")
-        sOpen, sClose = info.find("<S"), info.find("S>")
-        if (oOpen != -1) and (oClose != -1):
-            odometer = str(info[oOpen+2:oClose])
-            print(odometer)
-        if sOpen != -1 and sClose != -1:
-            speed = str(info[sOpen+2:sClose])
-            print(speed)
-        message = "odometer: " + odometer + ", speed: " + speed
+
+        # otherwise, ensure the queue has room in it
+        if not Q.full():
+
+            oOpen, oClose = info.find("<O"), info.find("O>")
+            sOpen, sClose = info.find("<S"), info.find("S>")
+            if (oOpen != -1) and (oClose != -1):
+                odometer = str(info[oOpen+2:oClose])
+                #print(odometer)
+            if sOpen != -1 and sClose != -1:
+                speed = str(info[sOpen+2:sClose])
+                #print(speed)
+            message = "odometer: " + odometer + ", speed: " + speed
+
+            # add the frame to the queue
+            Q.put(message)
+
+def more():
+    # return True if there are still frames in the queue
+    return Q.qsize() > 0
+
+def stop():
+    # indicate that the thread should be stopped
+    stopped = True
+
+def read_message():
+    # return next frame in the queue
+    return Q.get()
+
+
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    start()
+    return render_template('index.html')
+
+def gen(camera):
+    #host = "127.0.0.1"
+    #port = "1234"
+    #client_socket = socket.socket()
+
+    #try:
+        #client_socket.connect((host, int(port)))
+        ##client_socket.setblocking(0)
+    #except socket.error as msg:
+        #sys.stderr.write('WARNING: {}\n'.format(msg))
+        #time.sleep(5)  # intentional delay on reconnection as client
+        #print("Socket Error... exiting")
+        #sys.exit(0)
+    #odometer = "0"
+    #speed = "0"
+
+    message = "Waiting..."
+
+    while True:
+        #info = client_socket.recv(1024)
+        #oOpen, oClose = info.find("<O"), info.find("O>")
+        #sOpen, sClose = info.find("<S"), info.find("S>")
+        #if (oOpen != -1) and (oClose != -1):
+            #odometer = str(info[oOpen+2:oClose])
+            ##print(odometer)
+        #if sOpen != -1 and sClose != -1:
+            #speed = str(info[sOpen+2:sClose])
+            ##print(speed)
+        #message = "odometer: " + odometer + ", speed: " + speed
+
+        if more():
+            message = read_message()
+
         frame = camera.get_frame(message)
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')

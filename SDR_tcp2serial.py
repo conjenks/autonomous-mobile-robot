@@ -147,7 +147,7 @@ it waits for the next connect.
         srv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         srv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         srv.bind(('', args.localport))
-        srv.listen(1)
+        srv.listen(2)
     try:
         intentional_exit = False
         while True:
