@@ -62,7 +62,7 @@ class VideoCamera(object):
         #success, image = self.video.read()
 
         frame = self.vs.read()
-        frame = imutils.resize(frame, width=200)
+        frame = imutils.resize(frame, width=400)
 
         # convert the image to grayscale, load the face cascade detector,
         # and detect faces in the image
@@ -89,9 +89,9 @@ class VideoCamera(object):
         # so we must encode it into JPEG in order to correctly display the
         # video stream.
         font = cv2.FONT_HERSHEY_SIMPLEX
-        #image = cv2.putText(frame,'Kent State University', (10,40),font, 1, (255,255,255), 2, cv2.LINE_AA)
-        #image = cv2.putText(frame,'Software Development for Robotics', (10,100),font, 1, (255,255,255), 2, cv2.LINE_AA)
-        image = cv2.putText(frame, info, (10,400),font, 1, (255,255,255), 2, cv2.LINE_AA)
+        image = cv2.putText(frame,'Kent State University', (10,40),font, 0.5, (255,255,255), 2, cv2.LINE_AA)
+        image = cv2.putText(frame,'Software Development for Robotics', (10,100),font, 0.5, (255,255,255), 2, cv2.LINE_AA)
+        image = cv2.putText(frame, info, (10,200),font, 0.5, (255,255,255), 2, cv2.LINE_AA)
         ret, jpeg = cv2.imencode('.jpg', frame)
         #jpeg = cv2.line(jpeg, (100,0), 63, (0,0,255), -1)
         return jpeg.tobytes()
