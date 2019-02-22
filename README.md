@@ -1,6 +1,8 @@
 # autonomous-mobile-robot
 Project for Software Development for Robotics course at Kent State
 
+#### Note: These are instructions for myself and not intended as an actual public tutorial.
+
 
 To open communication with Arduino: 
 python2 SDR_tcp2serial.py -P 1234 /dev/ttyACM0
